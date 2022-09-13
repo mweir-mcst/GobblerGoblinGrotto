@@ -31,6 +31,28 @@ bool stoi_if_valid(std::string check, int & converted) {
     }
 }
 
+bool stol_if_valid(std::string check, long long & converted) {
+    // Remove whitespace
+    check = std::regex_replace(check, std::regex("\\s+"), "");
+
+    // Make sure string only contains int-safe characters
+    if (check.find_first_not_of("-0123456789") != std::string::npos) return false;
+
+    int number_of_dashes = (int) std::count(check.begin(), check.end(), '-');
+    // Only allow 1 dash
+    if (number_of_dashes > 1) return false;
+    // Make sure dash is first character
+    if (number_of_dashes > 0 && check.at(0) != '-') return false;
+
+    // Try converting, return false if it fails
+    try {
+        converted = std::stoll(check);
+        return true;
+    } catch(...) {
+        return false;
+    }
+}
+
 bool stod_if_valid(std::string check, double & converted) {
     // Remove whitespace
     check = std::regex_replace(check, std::regex("\\s+"), "");
@@ -89,6 +111,43 @@ int prompt_int_max(const std::string & prompt, const int max) {
     int value;
     do {
         value = prompt_int(prompt);
+    } while (value > max);
+    return value;
+}
+
+long long prompt_long(const std::string & prompt) {
+    long long value;
+    std::string response;
+
+    // Repeatedly prompt for
+    do {
+        std::cout << prompt;
+        std::getline(std::cin, response);
+    } while (!stol_if_valid(response, value));
+
+    return value;
+}
+
+long long prompt_long_min_max(const std::string & prompt, const long long min, const long long max) {
+    long long value;
+    do {
+        value = prompt_long(prompt);
+    } while (value < min || value > max);
+    return value;
+}
+
+long long prompt_long_min(const std::string & prompt, const long long min) {
+    long long value;
+    do {
+        value = prompt_long(prompt);
+    } while (value < min);
+    return value;
+}
+
+long long prompt_long_max(const std::string & prompt, const long long max) {
+    long long value;
+    do {
+        value = prompt_long(prompt);
     } while (value > max);
     return value;
 }

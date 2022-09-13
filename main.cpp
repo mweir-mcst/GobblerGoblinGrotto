@@ -4,11 +4,14 @@ string USERNAME = "Hello";
 string PASSWORD = "World";
 
 int main() {
+    cout.setf(ios::fixed);
+    cout << setprecision(2);
+
     cout << "  1) Login to your account" << endl;
     cout << "  2) Continue as a guest" << endl;
     cout << "  3) Exit" << endl;
 
-    int choice = prompt_int_min_max("Enter your choice (1-2): ", 1, 2);
+    int choice = prompt_int_min_max("Enter your choice (1-3): ", 1, 3);
 
     if (choice == 1) {
         if (prompt_string("Enter username: ") != USERNAME) {
@@ -31,7 +34,7 @@ int main() {
         cout << "  3) Check out" << endl;
         cout << "  4) Exit" << endl;
 
-        choice = prompt_int_min_max("Enter your choice (1-2): ", 1, 2);
+        choice = prompt_int_min_max("Enter your choice (1-4): ", 1, 4);
         switch (choice) {
             case 1:
                 customer.addToCart();
